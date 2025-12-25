@@ -250,6 +250,8 @@ void ObjectArray::Init(bool bScanAllMemory, const char* const ModuleName)
 
 	auto MatchesAnyLayout = []<typename ArrayLayoutType, size_t Size>(const std::array<ArrayLayoutType, Size>& ObjectArrayLayouts, uintptr_t Address)
 	{
+		__try
+		{
 		for (const ArrayLayoutType& Layout : ObjectArrayLayouts)
 		{
 			if (!IsAddressValidGObjects(Address, Layout))
@@ -268,7 +270,11 @@ void ObjectArray::Init(bool bScanAllMemory, const char* const ModuleName)
 
 			return true;
 		}
-		
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return false;
+		}
 		return false;
 	};
 
