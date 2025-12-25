@@ -219,7 +219,7 @@ void Off::Init()
 	Off::UObject::Name = OffsetFinder::FindUObjectNameOffset();
 	OverwriteIfInvalidOffset(Off::UObject::Name, (Off::UObject::Class + sizeof(void*))); // Default to right after Class
 	std::cerr << std::format("Off::UObject::Name: 0x{:X}\n\n", Off::UObject::Name);
-
+	//system("pause");
 	OverwriteIfInvalidOffset(Off::UObject::Outer, (Off::UObject::Name + sizeof(int32) + sizeof(int32)));  // Default to right after Name
 
 

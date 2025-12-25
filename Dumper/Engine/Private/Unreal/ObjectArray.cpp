@@ -252,24 +252,24 @@ void ObjectArray::Init(bool bScanAllMemory, const char* const ModuleName)
 	{
 		__try
 		{
-		for (const ArrayLayoutType& Layout : ObjectArrayLayouts)
-		{
-			if (!IsAddressValidGObjects(Address, Layout))
-				continue;
-
-			if constexpr (std::is_same_v<ArrayLayoutType, FFixedUObjectArrayLayout>)
+			for (const ArrayLayoutType& Layout : ObjectArrayLayouts)
 			{
-				Off::FUObjectArray::bIsChunked = false;
-				Off::FUObjectArray::FixedLayout = Layout;
-			}
-			else
-			{
-				Off::FUObjectArray::bIsChunked = true;
-				Off::FUObjectArray::ChunkedFixedLayout = Layout;
-			}
+				if (!IsAddressValidGObjects(Address, Layout))
+					continue;
 
-			return true;
-		}
+				if constexpr (std::is_same_v<ArrayLayoutType, FFixedUObjectArrayLayout>)
+				{
+					Off::FUObjectArray::bIsChunked = false;
+					Off::FUObjectArray::FixedLayout = Layout;
+				}
+				else
+				{
+					Off::FUObjectArray::bIsChunked = true;
+					Off::FUObjectArray::ChunkedFixedLayout = Layout;
+				}
+
+				return true;
+			}
 		}
 		__except (EXCEPTION_EXECUTE_HANDLER)
 		{
@@ -323,7 +323,7 @@ void ObjectArray::Init(bool bScanAllMemory, const char* const ModuleName)
 				if (Index < 0 || Index > Num())
 					return nullptr;
 
-				const int32 ChunkIndex = Index / PerChunk;
+				const int32 ChunkIndex = Index / PerChunk;\
 				const int32 InChunkIdx = Index % PerChunk;
 
 				uint8_t* ChunkPtr = DecryptPtr(*reinterpret_cast<uint8_t**>(ObjectsArray));
